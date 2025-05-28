@@ -34,11 +34,22 @@ if submitted:
             "<<NAAM_CONTACT>>": naam_contact
         }
 
+        # Replace in normal paragraphs
         for para in doc.paragraphs:
             for run in para.runs:
                 for key, val in vervangingen.items():
                     if key in run.text:
                         run.text = run.text.replace(key, val)
+
+        # Replace in table cells
+        for table in doc.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    for para in cell.paragraphs:
+                        for run in para.runs:
+                            for key, val in vervangingen.items():
+                                if key in run.text:
+                                    run.text = run.text.replace(key, val)
 
         output_docx = f"{bestandsnaam}.docx"
         doc.save(output_docx)
